@@ -1,0 +1,19 @@
+{
+  "name": "voice-controlled-virtual-robot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albondad/voice-controlled-virtual-robot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/albondad/voice-controlled-virtual-robot/issues"
+  },
+  "homepage": "https://github.com/albondad/voice-controlled-virtual-robot#readme"
+}
