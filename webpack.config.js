@@ -4,17 +4,17 @@ const webpack = require("webpack");
 module.exports = {
     entry: "./src/index.js",
     mode: "development",
-    modules: {
+    module: {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exlcude: /(node_modules|bower_components)/,
-                loader: "babel-loader",
-                options: {presets: ["@babel/env"]}
+                exclude: /(node_modules|bower_components)/,
+                loader: 'babel-loader',
+                options: {presets: ['@babel/env']}
             }
         ]
     },
-    resolve: { extensions: ["*", "./js", ".jsx"] },
+    resolve: { extensions: ["*", ".js", ".jsx"] },
     output: {
         path: path.resolve(__dirname, "dist/"),
         publicPath: "/dist/",
@@ -24,7 +24,6 @@ module.exports = {
         contentBase: path.join(__dirname, 'public/'),
         port: 3000,
         publicPath: "http:localhost:3000/dist",
-        hotOnly: true,
         open: true
     }
 }
