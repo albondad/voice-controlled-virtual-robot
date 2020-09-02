@@ -28,11 +28,12 @@ export const reducer = (state = initialState, action) => {
         case TOGGLE_RECORDING:
             if (state.recording) {
                 //await state.mediaRecorder.stop();
-                state.mediaRecorder.then(response => response.stop())
+                state.mediaRecorder.then(response => response.stop());
             }
             else {
                  //await state.mediaRecorder.start();
-                 state.mediaRecorder.then(response => response.start())
+                 state.mediaRecorder.then(response => response.start());
+
             }
             return {
                 ...state,

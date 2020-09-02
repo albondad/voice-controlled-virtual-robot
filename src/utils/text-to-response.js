@@ -19,4 +19,4 @@ const textToResponse = async (utterance) => {
     return responseJSON;
 };
 
-module.exports = textToResponse;
+export default textToResponse;
