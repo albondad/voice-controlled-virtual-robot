@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const textToResponse = async (utterance) => {
     const url = 'https://api.wit.ai/message?v=20200830&q=' + encodeURI(utterance);
     const headers = new fetch.Headers({
-        Authorization: 'Bearer V6ODPPQYLFVBDXH5VYXE5G2BBABXGLVW'
+        Authorization: 'Bearer ' + process.env.REACT_APP_WITAI_BEARER_TOKEN
     })
 
     const options = {
