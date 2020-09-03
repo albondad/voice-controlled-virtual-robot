@@ -4,7 +4,7 @@ import { RecordButton } from './ui/atoms';
 import { 
     START_RECORDING, TOGGLE_RECORDING
 } from '../redux';
-
+import { Button } from '@material-ui/core';
 const App = (props) => {
     return (
         <>
