@@ -1,12 +1,9 @@
 const fetch = require('node-fetch');
 
-/**
- * @param {string} utterance - the message that Wit.ai handles
- */
 const voiceToResponse = async (body) => {
     const url = 'https://api.wit.ai/speech'
     const headers = new fetch.Headers({
-        Authorization: 'Bearer V6ODPPQYLFVBDXH5VYXE5G2BBABXGLVW',
+        Authorization: 'Bearer ' + process.env.WITAI_TOKEN,
         'Content-Type': 'audio/mpeg3',
     })
 
