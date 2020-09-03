@@ -1,38 +1,49 @@
 import {
-    START_RECORDING,
-    STOP_RECORDING,
     TOGGLE_RECORDING
 } from './actions' 
-import initializeMediaRecorder from '../utils/media-recorder';
-console.log(initializeMediaRecorder);
+import Microm from 'microm';
+import sendRecording from '../utils/send-recording';
+import jszip from 'jszip';
+
+console.log(new Microm());
 
 const initialState = {
-    mediaRecorder: initializeMediaRecorder(),
+    //mediaRecorder: initializeMediaRecorder(),
     recording: false
 };
 
+const microm = new Microm();
+
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case START_RECORDING:
-            console.log('start recording')
-            return {
-                ...state,
-                recording: true
-            }
-        case STOP_RECORDING:
-            console.log('start recording')
-            return {
-                ...state,
-                recording: true
-            }
         case TOGGLE_RECORDING:
             if (state.recording) {
                 //await state.mediaRecorder.stop();
-                state.mediaRecorder.then(response => response.stop());
+                //state.mediaRecorder.then(response => response.stop());
+                microm.stop().then(response => {
+                    const zip = new jszip()
+                    zip.file('recording.mp3', response.blob);
+                    zip.generateAsync({type: 'blob'})
+                        .then(response => {
+                            sendRecording(response);
+                            //fileSaver(response, 'package.zip')
+                        })
+                    //fileSaver(response.blob, 'hello.mp3')
+                    //sendRecording(response.blob)
+                    //microm.download('thisisanaudio');
+                    //microm.play();
+                })
             }
             else {
-                 //await state.mediaRecorder.start();
-                 state.mediaRecorder.then(response => response.start());
+                //await state.mediaRecorder.start();
+                //state.mediaRecorder.then(response => response.start());
+                microm.record()
+                    .then(response => {
+                        console.log('recording');
+                    })
+                    .catch(response => {
+                        console.log('recording error')
+                    });
 
             }
             return {
@@ -43,22 +54,3 @@ export const reducer = (state = initialState, action) => {
             return state;
     }
 }
-
-// const initializeMediaRecorder = async () => {
-//     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-//     const mediaRecorder = mediaRecorder(stream);
-//     const audioChunks = [];
-
-//     mediaRecorder.addEventListener("dataavailable", event => {
-//         audioChunks.push(event.data);
-//     })
-
-//     mediaRecorder.addEventListener("stop", event => {
-//         const audioBlob = new Blob(audioChunks);
-//         const audioURL = URL.createObjectURL(audioBlob);
-//         const audio = new Audio(audioURL);
-//         audio.play();
-//     })
-
-//     return mediaRecorder;
-// }
