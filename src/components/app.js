@@ -1,10 +1,13 @@
-import { connect } from 'react-redux';
 import React from 'react';
+import { connect } from 'react-redux';
 import { TOGGLE_RECORDING} from '../redux';
-import { Grid } from '@material-ui/core';
+import { Home } from './pages';
 
 const App = (props) => {
-    return ( 
+    return (
+        <>
+            <Home />
+        </>
     )
 }
 
