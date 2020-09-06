@@ -7,18 +7,25 @@ export const Button = (props) => {
         <button 
             className="Button"
             onClick={props.onClick}
+            style={{
+                backgroundColor: props.backgroundColor
+            }}
         >
             {props.children}
             <style jsx>{`
                 .Button {
                     border-color: transparent;
-                    background-color: #333333;
-                    padding-top: ${em(8)};
-                    padding-right: ${em(16)};
-                    padding-bottom: ${em(8)};
-                    padding-left: ${em(16)};
+                    padding: ${em(16)} ${em(24)};
                     font-size: ${rem(16)};
                     color: #EEEEEE;
+                }
+
+                .Button:hover, .Button:focus {
+                    opacity: 0.8;
+                }
+
+                .Button:active {
+                    opacity: 0.6;
                 }
             `}</style>
         </button>
@@ -27,5 +34,6 @@ export const Button = (props) => {
 
 Button.defaultProps = {
     children: null,
-    onClick: () => {}
+    onClick: () => {},
+    backgroundColor: '#333333',
 }
