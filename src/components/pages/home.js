@@ -6,17 +6,24 @@ import {
     Container, 
     Text
 } from '../ui/atoms';
+import { connect } from 'react-redux';
+import { 
+    toggleRecordingAsync, 
+    TOGGLE_RECORDING_ASYNC, 
+    TOGGLE_RECORDING,
+    UPDATE_VELOCITY
+} from '../../redux';
+import { store } from '../../redux/store'
 import { rem, em } from 'polished';
 
-export const Home = (props) => {
-
-    
-
+const Home = (props) => {
     const canvasRef = useRef(null);
     setInterval(() => {
-        update(data)
+        update(canvasRef.current, data)
         paint(canvasRef.current, canvasRef.current.getContext('2d'), data);
-    }, 100)
+        //console.log(data)
+    }, 500)
+
     return (
         <Container
             pt={em(64)}
@@ -49,7 +56,7 @@ export const Home = (props) => {
                             display="flex"
                             justifyContent="flex-start"
                         >
-                            <Button>View Logs</Button>
+                            <Button onClick={() => props.updateMessage()}>View Logs</Button>
                         </Container>
                     </Grid>
                     <Grid 
@@ -60,7 +67,14 @@ export const Home = (props) => {
                             display="flex"
                             justifyContent="flex-end"
                         >
-                            <Button>Record</Button>
+                            <Button
+                                onClick={() => props.toggleRecordingAsync()}
+                                backgroundColor={props.recording ? '#EA4335' : '#333333'}
+                            >
+                                {
+                                    props.recording ? 'Stop Recording' : 'Start Record'
+                                }
+                            </Button>
                         </Container>
                     </Grid>
                 </Grid>
@@ -69,20 +83,38 @@ export const Home = (props) => {
     )
 }
 
-Home.defaultProps = {
+const mapStateToProps = state => {
+    return {
+        recording: state.recording
+    }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleRecordingAsync: () => dispatch(toggleRecordingAsync()),
+        updateMessage: () => dispatch({type: UPDATE_MEANING, message: 'this is an old adsfadsfadfs'})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 let xOffset = 64;
 
-let data = {
-    friction: 4,
-    xPosition: 32,
-    yPosition: 32,
-    xVelocity: 64,
-    yVelocity: 64,
-}
+let data = store.getState().data;
+let lastData = data;
 
-const update = (lastData) => {
+
+
+// data = {
+//     friction: 4,
+//     xPosition: 32,
+//     yPosition: 32,
+//     xVelocity: 64,
+//     yVelocity: 64,
+// }
+
+const update = (canvas, lastData) => {
+    lastData = store.getState().data;
     let friction = lastData.friction;
     let xPosition = lastData.xPosition;
     let yPosition = lastData.yPosition;
@@ -114,16 +146,46 @@ const update = (lastData) => {
          }
     }
 
+    if (xPosition < 0) {
+        xPosition = 0;
+        xVelocity *= -1;
+    }
+
+    if (xPosition > canvas.width) {
+        xPosition = canvas.width;
+        xVelocity *= -1;
+    }
+
+    if (yPosition < 0) {
+        yPosition = 0;
+        yVelocity *= -1;
+    }
+
+    if (yPosition > canvas.height) {
+        yPosition = canvas.height;
+        yVelocity *= -1;
+    }
+
     xPosition += xVelocity;
     yPosition += yVelocity;
 
-    data = {
-        ...lastData,
-        xPosition,
-        yPosition,
-        xVelocity,
-        yVelocity
+    if (store.getState().shouldUpdate) {
+        data = {
+            ...lastData,
+            xPosition,
+            yPosition,
+            xVelocity,
+            yVelocity
+        }
+    
+        store.dispatch({
+            type: UPDATE_VELOCITY,
+            velocity: {
+                ...data,
+            }
+        })
     }
+    //console.log(data);
 }
 
 const paint = (canvas, context, data) => {

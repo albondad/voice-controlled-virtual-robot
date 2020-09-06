@@ -11,16 +11,4 @@ const App = (props) => {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        ...state
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        toggleRecording: () => dispatch({ type: TOGGLE_RECORDING })
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
